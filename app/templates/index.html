@@ -7,21 +7,25 @@
             <th>Descripcion</td>
             <th>Moneda Comprada</td>
             <th>Cantidad Comprada</td>
-            <th>Precio Unitario</td>
-            <th>Unidad Pagada</td>
+            <th>Moneda Pagada</td>
             <th>Cantidad Pagada</td>
+            <th>Precio Unitario</td>
         </tr>
+        {% for movimiento in movimientos %}
         <tr>
-            <td>11/7/2019</td>
-            <td>Mi primera compra</td>
-            <td>BTC</td>
-            <td>1</td>
-            <td>6500</td>
-            <td>EUR</td>
-            <td>6500</td>
+            <td>{{movimiento[0]}}</td>
+            <td>{{movimiento[1]}}</td>
+            <td>{{movimiento[2]}}</td>
+            <td>{{movimiento[3]}}</td>
+            <td>{{movimiento[4]}}</td>
+            <td>{{movimiento[5]}}</td>
+            <td>{{movimiento[6]}}</td>
         </tr>
-                        
+        {% endfor %}                                
 
     </table>    
-
+    <br/>
+    <form action="/nuevacompra">
+        <button type="submit">Nueva compra</button>
+    </form>
 {% endblock %}

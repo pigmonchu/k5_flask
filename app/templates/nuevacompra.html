@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %} Compra de divisas {% endblock %}
+{% block body %} 
+    <h1>Compra de divisas</h1>
+    <p>Rellene los datos de la compra.</p>
+    <form action="nuevacompra" method="POST">
+        <input type="date" name="fecha" id="fecha" placeholder="Fecha"><br/>
+        <input type="text" name="concepto" id="concepto" placeholder="Concepto"><br/>
+        <select name="monedaComprada" id="monedaComprada">
+            <option value="EUR">Euro</option>
+            <option value="BTC">Bitcoin</option>
+            <option value="ETH">Ethereum</option>
+            <option value="LTC">Litecoin</option>
+        </select>
+        <br/>
+        <input type="number" name="cantidadComprada" id="cantidadComprada" placeholder="Cantidad Comprada"><br/>
+        <select name="monedaPagada" id="monedaPagada">
+            <option value="EUR">Euro</option>
+            <option value="BTC">Bitcoin</option>
+            <option value="ETH">Ethereum</option>
+            <option value="LTC">Litecoin</option>
+        </select>
+        <br/>
+        <input type="number" name="cantidadPagada" id="cantidadPagada" placeholder="Cantidad Pagada"><br/>
+        <input type="submit" value="Comprar">
+    </form>
+{% endblock %}
