@@ -1,0 +1,22 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+    <header>
+        <h1>Simple Exchanger</h1>
+    </header>
+    <div class="container">
+        <p class="menu">
+            <a href="./">Inicio</a> | <a href="/adios">Segunda Pagina</a>
+        </p>
+        {% block body %}{% endblock%}
+    </div>
+    <footer>
+        <p>Criptobook &copy; 2019</p>
+    </footer>
+</body>
+</html>
