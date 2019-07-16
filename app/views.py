@@ -25,10 +25,10 @@ def compra():
     else:
         msg = validar(request.values)
         if msg != True:
-            return render_template('nuevacompra.html', error=msg)
+            return render_template('nuevacompra.html', errores=msg)
 
         fMovimientos = open(ficheromovimientos, "a+")
-        precioUnitario = request.values['cantidadPagada']/request.values['cantidadComprada']
+        precioUnitario = float(request.values['cantidadPagada'])/float(request.values['cantidadComprada'])
         registro = '{},"{}",{},{},{},{},{}\n'.format(request.values['fecha'], 
                     request.values['concepto'], 
                     request.values['monedaComprada'], 
@@ -41,16 +41,24 @@ def compra():
         return redirect(url_for('index'))
 
 def validar(values):
+    errores = []
     if values['fecha'] == '':
-        return 'Debe informar la fecha'
+        errores.append('Debe informar la fecha')
     
     if values['concepto'] == '':
-        return 'Debe informar el concepto'
+        errores.append('Debe informar el concepto')
 
     if values['cantidadComprada'] == '':
-        return 'Debe informar la cantidad comprada'
+        errores.append('Debe informar la cantidad comprada')
 
     if values['cantidadPagada'] == '':
-        return 'Debe informar la cantidad pagada'   
+        errores.append('Debe informar la cantidad pagada')   
 
-    return True 
+    if len(errores) == 0:
+        return True
+    else:
+        return errores    
+
+@app.route('/skeleton.css')
+def skeleton():
+    return 'Hola, skeleton'

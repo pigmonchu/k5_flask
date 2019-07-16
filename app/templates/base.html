@@ -4,25 +4,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="./static/css/normalize.css">
+    <link rel="stylesheet" href="./static/css/skeleton.css">
+    <link rel="stylesheet" href="./static/css/styles.css">
+
+    <!--style>
+    * {
+        font-family:'Courier New', Courier, monospace;
+    }
+
+    .header {
+        background-color: gray;
+        color: white;
+    }
+
+    .mensajes-error {
+        color: red;
+    }
+
+    </style-->
 </head>
 <body>
-    <header>
-        <h1>Simple Exchanger</h1>
-    </header>
+    <div class="header">
+        <div class="container">
+            <h3>Simple Exchanger</h3>
+        </div>
+    </div>
     <div class="container">
         <p class="menu">
             <a href="./">Inicio</a> | <a href="/nuevacompra">Compra</a>
         </p>
+        {% if errores %}
+        <div class="mensajes-error">
+            <ul class="flash-messages">
+            {% for error in errores %}
+                <li>{{ error }}</li>    
+            {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+    
         {% block body %}{% endblock%}
     </div>
-    <div class="mensajes-error">
-            {% if error %}
-                <ul class="flash-messages">
-                    <li>{{ error }}</li>    
-                </ul>
-            {% endif %}
-    </div>
-    <footer>
+    <footer class="container">
         <p>Criptobook &copy; 2019</p>
     </footer>
 </body>

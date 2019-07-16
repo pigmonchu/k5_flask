@@ -1,0 +1,23 @@
+.header {
+    background-color: #33C3F0;
+    color: white;
+    padding-top: 16px;
+}
+
+.mensajes-error {
+    background-color:#ffc8c4;
+    color: #fe5f55;
+    font-size: 0.8em;
+    font-weight: bold;
+    padding: 10px;
+    line-height: 0.8em;
+}
+
+.flash-messages {
+    list-style: none;
+    margin-bottom: -5px;
+}
+
+.miboton {
+    margin-left: 8px;
+}

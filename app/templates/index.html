@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
 {% block title %} Exchanger {% endblock %}
 {% block body %} 
-    <table  border="1">
+    <table class="u-full-width">
         <tr>
+            <th>Sel.</td>
             <th>Fecha</td>
             <th>Descripcion</td>
             <th>Moneda Comprada</td>
@@ -13,6 +14,7 @@
         </tr>
         {% for movimiento in movimientos %}
         <tr>
+            <td><input type="radio" name="ix" value="{{ loop.index }}">{{loop.index}}</td>
             <td>{{movimiento[0]}}</td>
             <td>{{movimiento[1]}}</td>
             <td>{{movimiento[2]}}</td>
@@ -26,6 +28,7 @@
     </table>    
     <br/>
     <form action="/nuevacompra">
-        <button type="submit">Nueva compra</button>
+        <button type="submit" class="miboton  button-primary">Nueva compra</button>
+        <button type="submit" class="miboton  button-primary">Borrar</button>
     </form>
 {% endblock %}
