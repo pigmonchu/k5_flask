@@ -1,5 +1,3 @@
-2019-07-01,"Concepto 1",BTC,1,EUR,6000,6000
-2019-07-02,"Concepto 2",BTC,2,EUR,11800,5900
-2019-07-03,"Venta",EUR,8000,BTC,1,0.0000125
-2019-07-04,"Un concepto",EUR,1e4,EUR,3,0.0003
-2019-07-16,"Por fin una compra",ETH,23,EUR,2300,100.0
+2019-07-17,"Compra del miercoles",ETH,2,EUR,123,61.5
+2019-07-19,"Ya es viernes, por fin es viernes, que bien",BTC,1,EUR,1,1.0
+2019-07-23,"es el tres",EUR,1,EUR,2,2.0

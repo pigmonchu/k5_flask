@@ -1,8 +1,10 @@
 from app import app
 from flask import render_template, request, redirect, url_for, flash
 import csv
+from os import remove, rename
 
 ficheromovimientos = 'data/movimientos.txt'
+ficheronuevo = 'data/nuevomovimientos.txt'
 
 
 @app.route('/')
@@ -40,6 +42,33 @@ def compra():
         fMovimientos.close()
         return redirect(url_for('index'))
 
+
+@app.route('/procesarregistro', methods=['POST'])
+def procesar():
+    if request.values.get('ix'):
+        if request.values['btnselected'] == 'Borrar':
+            borrar(int(request.values['ix']))
+        else:
+            modificar(int(request.values['ix']))
+    return redirect(url_for('index'))
+
+
+def borrar(ix):
+    fe = open(ficheromovimientos, 'r')
+    fs = open(ficheronuevo, 'w')
+
+    contador = 1
+    for linea in fe:
+        if contador != ix:
+            fs.write(linea)
+        contador += 1
+    fe.close()
+    fs.close()
+
+    remove(ficheromovimientos)
+    rename(ficheronuevo, ficheromovimientos)
+
+
 def validar(values):
     errores = []
     if values['fecha'] == '':
@@ -59,6 +88,3 @@ def validar(values):
     else:
         return errores    
 
-@app.route('/skeleton.css')
-def skeleton():
-    return 'Hola, skeleton'

@@ -1,34 +1,36 @@
 {% extends 'base.html' %}
 {% block title %} Exchanger {% endblock %}
 {% block body %} 
-    <table class="u-full-width">
-        <tr>
-            <th>Sel.</td>
-            <th>Fecha</td>
-            <th>Descripcion</td>
-            <th>Moneda Comprada</td>
-            <th>Cantidad Comprada</td>
-            <th>Moneda Pagada</td>
-            <th>Cantidad Pagada</td>
-            <th>Precio Unitario</td>
-        </tr>
-        {% for movimiento in movimientos %}
-        <tr>
-            <td><input type="radio" name="ix" value="{{ loop.index }}">{{loop.index}}</td>
-            <td>{{movimiento[0]}}</td>
-            <td>{{movimiento[1]}}</td>
-            <td>{{movimiento[2]}}</td>
-            <td>{{movimiento[3]}}</td>
-            <td>{{movimiento[4]}}</td>
-            <td>{{movimiento[5]}}</td>
-            <td>{{movimiento[6]}}</td>
-        </tr>
-        {% endfor %}                                
+    <form action="/procesarregistro" method="POST">
+        <table class="u-full-width">
+            <tr>
+                <th>Sel.</td>
+                <th>Fecha</td>
+                <th>Descripcion</td>
+                <th>Moneda Comprada</td>
+                <th>Cantidad Comprada</td>
+                <th>Moneda Pagada</td>
+                <th>Cantidad Pagada</td>
+                <th>Precio Unitario</td>
+            </tr>
+            {% for movimiento in movimientos %}
+            <tr>
+                <td><input type="radio" name="ix" value="{{ loop.index }}"></td>
+                <td>{{movimiento[0]}}</td>
+                <td>{{movimiento[1]}}</td>
+                <td>{{movimiento[2]}}</td>
+                <td>{{movimiento[3]}}</td>
+                <td>{{movimiento[4]}}</td>
+                <td>{{movimiento[5]}}</td>
+                <td>{{movimiento[6]}}</td>
+            </tr>
+            {% endfor %}                                
 
-    </table>    
-    <br/>
-    <form action="/nuevacompra">
-        <button type="submit" class="miboton  button-primary">Nueva compra</button>
-        <button type="submit" class="miboton  button-primary">Borrar</button>
+        </table>    
+        <br/>
+            <a href="/nuevacompra" class="button button-primary">Nueva Compra</a>        
+            
+            <button name="btnselected" value="Modificar" type="submit" class="miboton  button-primary">Modificar</button>
+            <button name="btnselected" value="Borrar" type="submit" class="miboton  button-primary">Borrar</button>
     </form>
 {% endblock %}
