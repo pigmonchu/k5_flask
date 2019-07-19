@@ -42,6 +42,16 @@ def compra():
         fMovimientos.close()
         return redirect(url_for('index'))
 
+@app.route('/modificar', method=['GET', 'POST'])
+def update()
+    registro_leido <- movimientos.txt[request.values('ix')]
+    if request.method == 'GET':
+        render.template('update.html', movimientos_seleccionados = registroleido)
+        # recordar que la nueva template tendra values en los inputs del formulario
+        # value="{{movimiento_seleccionado['fecha']}}"
+    else:
+        recuperar los values
+        grabarlos en la posición adecuada del fichero sustituyendo al registro original (el 3)
 
 @app.route('/procesarregistro', methods=['POST'])
 def procesar():
@@ -50,6 +60,7 @@ def procesar():
             borrar(int(request.values['ix']))
         else:
             modificar(int(request.values['ix']))
+            redirect(url_for('update', ix=request.values['ix']))
     return redirect(url_for('index'))
 
 
