@@ -2,6 +2,7 @@ from app import app
 from flask import render_template, request, redirect, url_for, flash
 import csv
 from os import remove, rename
+from app.forms import CompraForm
 
 ficheromovimientos = 'data/movimientos.txt'
 ficheronuevo = 'data/nuevomovimientos.txt'
@@ -20,9 +21,10 @@ def index():
 
 @app.route('/nuevacompra', methods=['GET', 'POST'])
 def compra():
-    print(request.method)
+    form = CompraForm(request.form)
+
     if request.method == 'GET':
-        return render_template('nuevacompra.html')
+        return render_template('nuevacompra.html', form=form)
     else:
         msg = validar(request.values)
         if msg != True:
