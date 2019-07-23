@@ -4,48 +4,71 @@
     <h1>Modificación de movimientos</h1>
     <p>Modifique los datos de la compra.</p>
     <form action="modificar" method="POST">
-        <input class="u-full-width" type="number" name="ix" id="ix" value="{{ix}}" hidden>
+        {{ form.hidden_tag() }}
+        {{ form.ix(hidden="") }}
+        <!--input class="u-full-width" type="number" name="ix" id="ix" value="{{ix}}" hidden -->
         <div class="row">
-
-            <div class="four columns">
-                <label for="fecha">Fecha</label>
-                <input class="u-full-width" type="date" name="fecha" id="fecha" placeholder="Fecha" value="{{registro_seleccionado[0]}}">
+                <div class="four columns">
+                    <label for="fecha">{{form.fecha.label}}</label>
+                    {{form.fecha(class="u-full-width", type="date")}}
+                    {% if form.fecha.errors %}
+                        {% for error in form.fecha.errors %}
+                        <p class="field-error">{{ error }}</p>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="eight columns">
+                    <label for="concepto">{{form.concepto.label}}</label>
+                    {{form.concepto(class="u-full-width", placeholder="Concepto")}}
+                    {% if form.concepto.errors %}
+                        {% for error in form.concepto.errors %}
+                        <p class="field-error">{{ error }}</p>
+                        {% endfor %}
+                    {% endif %}
+    
+                </div>
             </div>
-            <div class="eight columns">
-                <label for="concepto">Concepto</label>
-                <input class="u-full-width" type="text" name="concepto" id="concepto" placeholder="Concepto" value="{{registro_seleccionado[1]}}">
+            <div class="row">
+                <div class="six columns">
+                    <label for="cantidadComprada">{{form.cantidadComprada.label}}</label>
+                    {{form.cantidadComprada(class="u-full-width", placeholder="Cantidad Comprada")}}
+                    {% if form.cantidadComprada.errors %}
+                        {% for error in form.cantidadComprada.errors %}
+                            <p class="field-error">{{ error }}</p>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="six columns">
+                    <label for="monedaComprada">{{form.monedaComprada.label}}</label>
+                    {{form.monedaComprada(class="u-full-width")}}
+                    {% if form.monedaComprada.errors %}
+                        {% for error in form.monedaComprada.errors %}
+                            <p class="field-error">{{ error }}</p>
+                        {% endfor %}
+                    {% endif %}
+    
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="six columns">
-                <label for="cantidadComprada">Cantidad comprada</label>
-                <input class="u-full-width" type="number" name="cantidadComprada" id="cantidadComprada" placeholder="Cantidad Comprada" value="{{registro_seleccionado[3]}}"><br/>
+            <div class="row">
+                <div class="six columns">
+                    <label for="cantidadPagada">{{form.cantidadPagada.label}}</label>
+                    {{form.cantidadPagada(class="u-full-width", placeholder="Cantidad Pagada")}}
+                    {% if form.cantidadPagada.errors %}
+                        {% for error in form.cantidadPagada.errors %}
+                            <p class="field-error">{{ error }}</p>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="six columns">
+                    <label for="monedaPagada">{{form.monedaPagada.label}}</label>
+                    {{form.monedaPagada(class="u-full-width")}}
+                    {% if form.monedaPagada.errors %}
+                        {% for error in form.monedaPagada.errors %}
+                            <p class="field-error">{{ error }}</p>
+                        {% endfor %}
+                    {% endif %}
+                </div>
             </div>
-            <div class="six columns">
-                <label for="monedaComprada">Moneda</label>
-                <select class="u-full-width" name="monedaComprada" id="monedaComprada" >{{registro_seleccionado[2]}}
-                    <option {{ 'selected' if registro_seleccionado[2]=='EUR' else ''}} value="EUR">Euro</option>
-                    <option {{ 'selected' if registro_seleccionado[2]=='BTC' else ''}} value="BTC">Bitcoin</option>
-                    <option {{ 'selected' if registro_seleccionado[2]=='ETH' else ''}} value="ETH">Ethereum</option>
-                    <option {{ 'selected' if registro_seleccionado[2]=='LTC' else ''}} value="LTC">Litecoin</option>
-                </select>
-            </div>
-        </div>
-        <div class="row">
-            <div class="six columns">
-                <label for="cantidadPagada">Cantidad Pagada</label>
-                <input class="u-full-width" type="number" name="cantidadPagada" id="cantidadPagada" placeholder="Cantidad Pagada" value="{{registro_seleccionado[5]}}"><br/>
-            </div>
-            <div class="six columns">
-                <label for="monedaPagada">Moneda</label>
-                <select class="u-full-width" name="monedaPagada" id="monedaPagada">
-                    <option {{ 'selected' if registro_seleccionado[4]=='EUR' else ''}} value="EUR">Euro</option>
-                    <option {{ 'selected' if registro_seleccionado[4]=='BTC' else ''}} value="BTC">Bitcoin</option>
-                    <option {{ 'selected' if registro_seleccionado[4]=='ETH' else ''}} value="ETH">Ethereum</option>
-                    <option {{ 'selected' if registro_seleccionado[4]=='LTC' else ''}} value="LTC">Litecoin</option>
-                </select>
-            </div>
-        </div>
-        <input class="button-primary u-pull-right" type="submit" value="Modificar">
-    </form>
+            {{ form.submit(class="button-primary u-pull-right") }}
+        </form>
 {% endblock %}

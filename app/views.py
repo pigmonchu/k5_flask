@@ -2,7 +2,7 @@ from app import app
 from flask import render_template, request, redirect, url_for, flash
 import csv
 from os import remove, rename
-from app.forms import CompraForm
+from app.forms import CompraForm, UpdateForm
 
 ficheromovimientos = 'data/movimientos.txt'
 ficheronuevo = 'data/nuevomovimientos.txt'
@@ -26,49 +26,63 @@ def compra():
     if request.method == 'GET':
         return render_template('nuevacompra.html', form=form)
     else:
-        msg = validar(request.values)
-        if msg != True:
-            return render_template('nuevacompra.html', errores=msg)
+        if form.validate():
+            fMovimientos = open(ficheromovimientos, "a+")
+            precioUnitario = float(request.values['cantidadPagada'])/float(request.values['cantidadComprada'])
+            registro = '{},"{}",{},{},{},{},{}\n'.format(request.values['fecha'], 
+                        request.values['concepto'], 
+                        request.values['monedaComprada'], 
+                        request.values['cantidadComprada'], 
+                        request.values['monedaPagada'], 
+                        request.values['cantidadPagada'], 
+                        precioUnitario)
+            fMovimientos.write(registro)
+            fMovimientos.close()
+            return redirect(url_for('index'))
 
-        fMovimientos = open(ficheromovimientos, "a+")
-        precioUnitario = float(request.values['cantidadPagada'])/float(request.values['cantidadComprada'])
-        registro = '{},"{}",{},{},{},{},{}\n'.format(request.values['fecha'], 
-                    request.values['concepto'], 
-                    request.values['monedaComprada'], 
-                    request.values['cantidadComprada'], 
-                    request.values['monedaPagada'], 
-                    request.values['cantidadPagada'], 
-                    precioUnitario)
-        fMovimientos.write(registro)
-        fMovimientos.close()
-        return redirect(url_for('index'))
+        return render_template('nuevacompra.html', form=form)
+
 
 @app.route('/modificar', methods=['GET', 'POST'])
 def update():
-    
+    form = UpdateForm(request.form)
     if request.method == 'GET':
         if request.values.get('ix'):
             movimiento, ix = recuperarregistro(request.values.get('ix'))
-            return render_template('update.html', registro_seleccionado=movimiento, ix=ix)
-    else:
-        if request.values.get('ix'):
-            msg = validar(request.values)
-            if msg != True:
-                registro_seleccionado = [
-                    request.values['fecha'],
-                    request.values['concepto'],
-                    request.values['monedaComprada'],
-                    request.values['cantidadComprada'],
-                    request.values['monedaPagada'],
-                    request.values['cantidadPagada']
-                ]
 
-                return render_template('update.html', registro_seleccionado=registro_seleccionado, ix=request.values['ix'], errores=msg)
-            
+            nombre = ['fecha', 'concepto', 'monedaComprada', 'cantidadComprada', 'monedaPagada', 'cantidadPagada']
+            for i in range(len(nombre)):
+                form[nombre[i]].data = movimiento[i]
+
+            '''
+            contador = 0
+            for campo in nombre:
+                form[campo].data = movimiento[contador]
+                contador += 1
+
+            form.fecha.data = movimiento[0]
+            form.concepto.data = movimiento[1]
+            form.monedaComprada.data = movimiento[2]
+            form.cantidadComprada.data = movimiento[3]
+            form.monedaPagada.data = movimiento[4]
+            form.cantidadPagada.data = movimiento[5]
+            '''
+            form.ix.data = ix
+            return render_template('update.html', form=form)
+    else:
+        if form.validate():
+            registro_seleccionado = [
+                form.fecha.data,
+                request.values['fecha'],
+                request.values['concepto'],
+                request.values['monedaComprada'],
+                request.values['cantidadComprada'],
+                request.values['monedaPagada'],
+                request.values['cantidadPagada']
+            ]
             modificarregistro(request.values)
             return redirect(url_for('index'))
-        #        recuperar los values
-        #grabarlos en la posición adecuada del fichero sustituyendo al registro original (el 3)
+        return render_template('update.html', form=form)
 
 @app.route('/procesarregistro', methods=['POST'])
 def procesar():

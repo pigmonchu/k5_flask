@@ -3,36 +3,69 @@
 {% block body %} 
     <h1>Compra de divisas</h1>
     <p>Rellene los datos de la compra.</p>
+
     <form action="nuevacompra" method="POST">
         {{ form.hidden_tag() }}
         <div class="row">
             <div class="four columns">
                 <label for="fecha">{{form.fecha.label}}</label>
                 {{form.fecha(class="u-full-width", type="date")}}
+                {% if form.fecha.errors %}
+                    {% for error in form.fecha.errors %}
+                    <p class="field-error">{{ error }}</p>
+                    {% endfor %}
+                {% endif %}
             </div>
             <div class="eight columns">
                 <label for="concepto">{{form.concepto.label}}</label>
                 {{form.concepto(class="u-full-width", placeholder="Concepto")}}
+                {% if form.concepto.errors %}
+                    {% for error in form.concepto.errors %}
+                    <p class="field-error">{{ error }}</p>
+                    {% endfor %}
+                {% endif %}
+
             </div>
         </div>
         <div class="row">
             <div class="six columns">
                 <label for="cantidadComprada">{{form.cantidadComprada.label}}</label>
                 {{form.cantidadComprada(class="u-full-width", placeholder="Cantidad Comprada")}}
+                {% if form.cantidadComprada.errors %}
+                    {% for error in form.cantidadComprada.errors %}
+                        <p class="field-error">{{ error }}</p>
+                    {% endfor %}
+                {% endif %}
             </div>
             <div class="six columns">
                 <label for="monedaComprada">{{form.monedaComprada.label}}</label>
                 {{form.monedaComprada(class="u-full-width")}}
+                {% if form.monedaComprada.errors %}
+                    {% for error in form.monedaComprada.errors %}
+                        <p class="field-error">{{ error }}</p>
+                    {% endfor %}
+                {% endif %}
+
             </div>
         </div>
         <div class="row">
             <div class="six columns">
                 <label for="cantidadPagada">{{form.cantidadPagada.label}}</label>
                 {{form.cantidadPagada(class="u-full-width", placeholder="Cantidad Pagada")}}
+                {% if form.cantidadPagada.errors %}
+                    {% for error in form.cantidadPagada.errors %}
+                        <p class="field-error">{{ error }}</p>
+                    {% endfor %}
+                {% endif %}
             </div>
             <div class="six columns">
                 <label for="monedaPagada">{{form.monedaPagada.label}}</label>
                 {{form.monedaPagada(class="u-full-width")}}
+                {% if form.monedaPagada.errors %}
+                    {% for error in form.monedaPagada.errors %}
+                        <p class="field-error">{{ error }}</p>
+                    {% endfor %}
+                {% endif %}
             </div>
         </div>
         <input class="button-primary u-pull-right" type="submit" value="Comprar">
