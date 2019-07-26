@@ -11,18 +11,16 @@
                 <th>Cantidad Comprada</td>
                 <th>Moneda Pagada</td>
                 <th>Cantidad Pagada</td>
-                <th>Precio Unitario</td>
             </tr>
             {% for movimiento in movimientos %}
             <tr>
-                <td><input type="radio" name="ix" value="{{ loop.index }}"></td>
+                <td><input type="radio" name="ix" value="{{ movimiento[6] }}"></td>
                 <td>{{movimiento[0]}}</td>
                 <td>{{movimiento[1]}}</td>
                 <td>{{movimiento[2]}}</td>
                 <td>{{movimiento[3]}}</td>
                 <td>{{movimiento[4]}}</td>
                 <td>{{movimiento[5]}}</td>
-                <td>{{movimiento[6]}}</td>
             </tr>
             {% endfor %}                                
 

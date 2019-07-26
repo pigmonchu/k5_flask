@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import DateField, StringField, FloatField, SelectField, SubmitField, IntegerField
 from wtforms.validators import DataRequired, ValidationError
 
-def greater_than_zero(field):
+def greater_than_zero(form, field):
     if field.data <=0:
         raise ValidationError('Debe ser un número positivo')
 
