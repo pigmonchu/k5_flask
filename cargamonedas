@@ -1,0 +1,15 @@
+filas  = select * from monedas;
+
+for fila in filas:
+    update movimientos set id_monedaComprada = (select id from monedas where symbol = fila.symbol)
+     where monedaComprada = fila.symbol
+    
+    update movimientos set id_monedaPagada = (select id from monedas where symbol = fila.symbol)
+     where monedaPagada = fila.symbol
+
+commit
+
+Alter table creando las relaciones id_monedaComprada -> monedas 
+                                   id_monedaPagada -> monedas
+
+Alter table borrando fila monedaComprada, monedaPagada
