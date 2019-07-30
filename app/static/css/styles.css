@@ -10,6 +10,16 @@
     font-weight: bold;
     margin-top: -8px;
 }
+
+.general-error {
+    color: red;
+    background-color: yellow;
+    font-weight: bold;
+    font-size: 1.5em;
+    text-transform: uppercase;
+    text-align: center;
+    border: 1px solid black;
+}
 .miboton {
     margin-left: 8px;
 }

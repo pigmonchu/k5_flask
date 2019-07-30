@@ -30,7 +30,7 @@ def index():
 
     _dMonedas = diccionarioMonedas()
 
-    rows = cursor.execute("select fecha, concepto, id_monedaComprada, cantidadComprada, id_monedaPagada, cantidadPagada, id from movimientos order by fecha;")
+    rows = cursor.execute("SELECT fecha, concepto, id_monedaComprada, cantidadComprada, id_monedaPagada, cantidadPagada, id from movimientos order by fecha;")
 
     movements = []
     for row in rows:
@@ -42,13 +42,8 @@ def index():
         nombreMoneda = _dMonedas[row[4]]
         row[4] = nombreMoneda
         movements.append(row)
-    '''
-    fMovimientos = open(ficheromovimientos, "r")
-    csvreader = csv.reader(fMovimientos, delimiter=',', quotechar='"')
-    movements = []
-    for movimiento in csvreader: 
-        movements.append(movimiento)
-    '''
+
+    conn.commit()
     conn.close()
     #enviar movimientos a index.html
     return render_template('index.html', movimientos=movements)
@@ -56,13 +51,13 @@ def index():
 @app.route('/nuevacompra', methods=['GET', 'POST'])
 def compra():
     form = CompraForm(request.form)
-    form.monedaComprada.data = int(form.monedaComprada.data)
-    form.monedaPagada.data = int(form.monedaPagada.data)
 
 
     if request.method == 'GET':
         return render_template('nuevacompra.html', form=form)
     else:
+        form.monedaComprada.data = int(form.monedaComprada.data)
+        form.monedaPagada.data = int(form.monedaPagada.data)
         if form.validate():
             conn = sqlite3.connect(database)
             cursor = conn.cursor()
@@ -71,28 +66,23 @@ def compra():
                 (fecha, concepto, id_monedaComprada, cantidadComprada, id_monedaPagada, cantidadPagada)
                 values (?, ?, ?, ?, ?, ?);
             '''
-            rows = cursor.execute(query,(request.form['fecha'],
-                                         request.form['concepto'], 
-                                         request.form['monedaComprada'], 
-                                         request.form['cantidadComprada'], 
-                                         request.form['monedaPagada'], 
-                                         request.form['cantidadPagada']
-            ))
+            try:
+                rows = cursor.execute(query,(request.form['fecha'],
+                                            request.form['concepto'], 
+                                            request.form['monedaComprada'], 
+                                            request.form['cantidadComprada'], 
+                                            request.form['monedaPagada'], 
+                                            request.form['cantidadPagada']
+                ))
+            except sqlite3.Error as e:
+                form.monedaComprada.data = str(form.monedaComprada.data)
+                form.monedaPagada.data = str(form.monedaPagada.data)
+                form.errors['general'] = ["Error en base de datos: {}".format(e)]
+
+                return render_template('nuevacompra.html', form=form)
+
             conn.commit()
             conn.close()
-            '''
-            fMovimientos = open(ficheromovimientos, "a+")
-            precioUnitario = float(request.values['cantidadPagada'])/float(request.values['cantidadComprada'])
-            registro = '{},"{}",{},{},{},{},{}\n'.format(request.values['fecha'], 
-                        request.values['concepto'], 
-                        request.values['monedaComprada'], 
-                        request.values['cantidadComprada'], 
-                        request.values['monedaPagada'], 
-                        request.values['cantidadPagada'], 
-                        precioUnitario)
-            fMovimientos.write(registro)
-            fMovimientos.close()
-            '''
             return redirect(url_for('index'))
 
         return render_template('nuevacompra.html', form=form)
@@ -165,6 +155,7 @@ def recuperarregistro(ix):
             '''
 
     rows = cursor.execute(query, (ix,))
+    
     resp = []
     for row in rows:
         resp.append(row)
@@ -186,7 +177,7 @@ def modificarregistro(values):
     cursor = conn.cursor()
 
     query = '''
-        update movimientos 
+        UPDATE movimientos 
            set fecha = ?,
                concepto = ?,
                id_monedaComprada = ?,
@@ -203,53 +194,23 @@ def modificarregistro(values):
     conn.commit()
     conn.close() 
 
-
-    '''
-
-    fe = open(ficheromovimientos, 'r')
-    fs = open(ficheronuevo, 'w')
-    ix = int(values.get('ix'))
-
-
-    precioUnitario = float(values['cantidadPagada'])/float(values['cantidadComprada'])
-    registro = '{},"{}",{},{},{},{},{}\n'.format(values['fecha'], 
-                values['concepto'], 
-                values['monedaComprada'], 
-                values['cantidadComprada'], 
-                values['monedaPagada'], 
-                values['cantidadPagada'], 
-                precioUnitario)
-
-    contador = 1
-    for linea in fe:
-        if contador == ix:
-            linea = registro
-        fs.write(linea)
-
-        contador += 1
-
-    fe.close()
-    fs.close()
-
-    remove(ficheromovimientos)
-    rename(ficheronuevo, ficheromovimientos)
-    '''
     
 def borrar(ix):
-    fe = open(ficheromovimientos, 'r')
-    fs = open(ficheronuevo, 'w')
+    conn = sqlite3.connect(database)
+    cursor = conn.cursor()
 
-    contador = 1
-    for linea in fe:
-        if contador != ix:
-            fs.write(linea)
-        contador += 1
-    fe.close()
-    fs.close()
+    query = '''
+        DELETE from movimientos 
+        where id = ?;
+    '''
+    try:
+        rows = cursor.execute(query, (ix,))
+    except sqlite3.Error as e:
+        print(e)
+        return
 
-    remove(ficheromovimientos)
-    rename(ficheronuevo, ficheromovimientos)
-
+    conn.commit()
+    conn.close()
 
 def validar(values):
     errores = []

@@ -4,6 +4,11 @@
     <h1>Compra de divisas</h1>
     <p>Rellene los datos de la compra.</p>
 
+    {% if form.errors['general'] %}
+        {% for error in form.errors['general'] %}
+            <p class="general-error"> {{ error }} </p>
+        {% endfor %}
+    {% endif %}
     <form action="nuevacompra" method="POST">
         {{ form.hidden_tag() }}
         <div class="row">
